@@ -4,8 +4,11 @@ import java.util.Random;
 import com.hadoop.compression.lzo.LzoCodec;
 import com.twitter.elephantbird.examples.proto.Examples;
 import com.twitter.elephantbird.mapreduce.input.MultiInputFormat;
+import com.twitter.elephantbird.mapreduce.io.BinaryBlockWriter;
+import com.twitter.elephantbird.mapreduce.io.ProtobufBlockWriter;
 import com.twitter.elephantbird.mapreduce.io.ProtobufWritable;
 import com.twitter.elephantbird.mapreduce.output.LzoProtobufBlockOutputFormat;
+import com.twitter.elephantbird.mapreduce.output.LzoProtobufBlockRecordWriter;
 import com.twitter.elephantbird.util.HadoopCompat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -124,7 +127,7 @@ public class MRJob {
 		lzoMapperMain();
 	}
 
-	public static void writeSomeStuff() throws IOException {
+	public static void writeSomeStuff() throws Exception {
 		Configuration conf = new Configuration();
 
 //		Path opath = new Path("/elephant.seq");
@@ -135,10 +138,17 @@ public class MRJob {
 		Path sf = new Path("/home/asatish/Downloads/sequence-file");
 		FSDataOutputStream os = fs.create(sf);
 
-		SequenceFile.Writer writer =
+
+		BinaryBlockWriter<Examples.Age> bw = new ProtobufBlockWriter<Examples.Age>(os, Examples.Age.class);
+		LzoProtobufBlockRecordWriter writer = new LzoProtobufBlockRecordWriter<
+				Examples.Age, ProtobufWritable<Examples.Age>>(bw);
+
+
+
+//		SequenceFile.Writer writer =
 //		SequenceFile.createWriter(fs, conf, sf, LongWritable.class, Text.class);
-		SequenceFile.createWriter(conf, os, LongWritable.class, ProtobufWritable.class,
-				SequenceFile.CompressionType.BLOCK, new LzoCodec());
+//		SequenceFile.createWriter(conf, os, LongWritable.class, ProtobufWritable.class,
+//				SequenceFile.CompressionType.BLOCK, new LzoCodec());
 
 		ProtobufWritable<Examples.Age> protoWritable = ProtobufWritable.newInstance(Examples.Age.class);
 
@@ -154,10 +164,11 @@ public class MRJob {
 //			writer.append(new LongWritable(a), new Text(name));
 
 			protoWritable.set(age);
-			writer.append(new LongWritable(a), protoWritable);
+//			writer.append(new LongWritable(a), protoWritable);
+			writer.write(null, protoWritable);
 		}
 
-		writer.close();
+		writer.close(null);
 		os.close();
 	}
 

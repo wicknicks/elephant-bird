@@ -689,6 +689,7 @@
     <module>lucene</module>
     <module>pig-lucene</module>
     <module>examples</module>
+      <module>turnexamples</module>
   </modules>
 
 </project>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>elephant-bird</artifactId>
+        <groupId>com.twitter.elephantbird</groupId>
+        <version>4.6-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>turnexamples</artifactId>
+
+    <properties>
+        <TURN_HOME>${env.TURN_HOME}</TURN_HOME>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.twitter.elephantbird</groupId>
+            <artifactId>elephant-bird-core</artifactId>
+            <version>4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop</artifactId>
+            <version>0.20.2-cdh3u4</version>
+            <scope>system</scope>
+            <systemPath>${TURN_HOME}/lib/hadoop-core-0.20.2-cdh3u4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop.thirdparty</groupId>
+            <artifactId>guava</artifactId>
+            <version>r09-jarjar</version>
+            <scope>system</scope>
+            <systemPath>${TURN_HOME}/lib/guava-r09-jarjar.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+</project>

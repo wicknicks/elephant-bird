@@ -43,6 +43,7 @@ public class TPWriter {
 	}
 
 	public static void main(String[] args) throws IOException {
+		System.loadLibrary("gplcompression");
 		TPWriter tpWriter = new TPWriter();
 		tpWriter.writeAll();
 	}
